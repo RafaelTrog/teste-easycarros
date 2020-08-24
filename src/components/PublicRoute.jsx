@@ -2,17 +2,17 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./Auth";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PublicRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
       isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
         <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+      ) : (
+        <Component {...props} />
       )
     }
   />
 );
 
-export default PrivateRoute;
+export default PublicRoute;

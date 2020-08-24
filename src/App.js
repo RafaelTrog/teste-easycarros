@@ -1,13 +1,7 @@
 import React from 'react';
 import './App.css';
-import Root from './components/Root'
+import Routes from './components/Routes'
 
-function App() {
-  return (
-    <div className="App">
-      <Root />
-    </div>
-  );
-}
+const App = () => <Routes />
 
 export default App;
