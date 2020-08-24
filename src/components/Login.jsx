@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { FaUserAlt, FaLock } from 'react-icons/fa'
 import axios from 'axios'
+import { login } from './Auth'
+import { history } from '../history'
 
 const LoginBox = styled.form`
     // border: 1px solid red;
@@ -102,7 +104,8 @@ export default Login => {
     
             const res = await axios(config)
     
-            console.log(res.data.data.token)
+            login(res.data.data.token)
+            history.push('/consulta')
         }else {
             console.log('algum campo em branco')
         }
@@ -121,7 +124,14 @@ export default Login => {
         console.log('logou')
         console.log('EMAIL: ' + user)
         console.log('SENHA: ' + password)
-        getLogin()
+
+        if(!user) {
+            alert("Usuário em branco!")
+        }else if (!password) {
+            alert("Senha em branco!")
+        }else {
+            getLogin()
+        }
     }
 
     return (
