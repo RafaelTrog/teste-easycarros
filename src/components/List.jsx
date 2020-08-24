@@ -3,7 +3,7 @@ import axios from "axios";
 import { STORAGE_KEY, logout } from "./Auth";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt } from "react-icons/fa";
 
 const CarsContainer = styled.div`
   position: absolute;
@@ -13,10 +13,14 @@ const CarsContainer = styled.div`
   width: 350px;
   background-color: #fff;
   border-radius: 22px;
+
+  @media (max-width: 350px) {
+    width: 90%;
+  }
 `;
 
 const CarList = styled.ul`
-//   border: 1px solid red;
+  //   border: 1px solid red;
   padding: 0;
   margin: 0;
 `;
@@ -33,12 +37,13 @@ const CarItem = styled.li`
   line-height: 50px;
   padding: 0 20px 0 20px;
   font-weight: bold;
+  transition: all 2s ease-out;
 
   & svg {
-      margin: auto 0;
-      color: #c90000;
-      font-size: 18px;
-      cursor: pointer;
+    margin: auto 0;
+    color: #c90000;
+    font-size: 18px;
+    cursor: pointer;
   }
 `;
 
@@ -48,7 +53,6 @@ const LogoutButton = styled.button`
   border: none;
   border-radius: 40px;
   box-sizing: border-box;
-  margin-top: 20px;
   color: #fff;
   font-weight: bold;
   background-color: #0083d4;
@@ -56,12 +60,25 @@ const LogoutButton = styled.button`
   outline: none;
 
   &:hover {
-      background-color: #0068a8;
+    background-color: #0068a8;
   }
+`;
+
+const InputPlate = styled.input`
+  width: 100%;
+  height: 45px;
+  outline: none;
+  font-size: 20px;
+  line-height: 45px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 40px;
+  text-align: center;
 `;
 
 const List = () => {
   const [cars, setCars] = useState([]);
+  const [placa, setPlaca] = useState("");
 
   const history = useHistory();
 
@@ -90,12 +107,63 @@ const List = () => {
     history.push("/");
   };
 
+  const handleDelete = async (id) => {
+    const config = {
+      method: "delete",
+      url: "http://localhost:8181/vehicle/" + id,
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.getItem(STORAGE_KEY),
+      },
+    };
+
+    await axios(config);
+    getCars();
+  };
+
+  const handleAdd = async (placa) => {
+    const config = {
+      method: "post",
+      url: "http://localhost:8181/vehicle",
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.getItem(STORAGE_KEY),
+      },
+      data: {
+        plate: placa,
+      },
+    };
+
+    await axios(config);
+    getCars();
+  };
+
+  const RenderCars = () => {
+    if (cars.length > 0) {
+      return cars.map((carro) => {
+        return (
+          <CarItem key={carro.id}>
+            {carro.plate} <FaTrashAlt onClick={() => handleDelete(carro.id)} />{" "}
+          </CarItem>
+        );
+      });
+    } else {
+      return <CarItem>Nenhum veículo cadastrado!</CarItem>;
+    }
+  };
+
   return (
     <CarsContainer>
+      <InputPlate type="text" placeholder="XXX0000"  onChange={(e) => { setPlaca(e.target.value)}} />
+      <LogoutButton
+        onClick={() => {
+          handleAdd(placa);
+        }}
+      >
+        ADICIONAR
+      </LogoutButton>
       <CarList>
-        {cars.map((carro) => {
-          return <CarItem key={carro.id}>{carro.plate} <FaTrashAlt /> </CarItem>;
-        })}
+        <RenderCars />
       </CarList>
       <LogoutButton onClick={handleLogout}>SAIR</LogoutButton>
     </CarsContainer>

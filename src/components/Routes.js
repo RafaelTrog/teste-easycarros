@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 import Login from "./Login";
 import List from "./List";
 import NotFound from "./NotFound";
