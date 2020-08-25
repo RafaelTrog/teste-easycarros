@@ -11,7 +11,7 @@ const CarsContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 350px;
-  background-color: #fff;
+  // background-color: #fff;
   border-radius: 22px;
 
   @media (max-width: 350px) {
@@ -21,6 +21,9 @@ const CarsContainer = styled.div`
 
 const CarList = styled.ul`
   //   border: 1px solid red;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 22px;
   padding: 0;
   margin: 0;
 `;
@@ -58,10 +61,17 @@ const LogoutButton = styled.button`
   background-color: #0083d4;
   cursor: pointer;
   outline: none;
+  margin-bottom: 20px;
 
   &:hover {
     background-color: #0068a8;
   }
+`;
+
+const AddButton = styled(LogoutButton)`
+  width: 100px;
+  border-radius: 0 40px 40px 0;
+  margin: 0;
 `;
 
 const InputPlate = styled.input`
@@ -71,14 +81,41 @@ const InputPlate = styled.input`
   font-size: 20px;
   line-height: 45px;
   box-sizing: border-box;
-  border: 1px solid #000;
-  border-radius: 40px;
+  border: none;
+  border-radius: 40px 0 0 40px;
   text-align: center;
+  flex: 1;
 `;
+
+const InsertPlateError = styled.div`
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  background-color: red;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  transition: all 0.2s ease-out;
+`
+
+const InsertPlateHit = styled(InsertPlateError)`
+  background-color: green;
+`
+
+const Insertion = styled.div`
+  width: 100%;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+`
 
 const List = () => {
   const [cars, setCars] = useState([]);
   const [placa, setPlaca] = useState("");
+  const [erro, setErro] = useState(false);
+  const [acerto, setAcerto] = useState(false);
 
   const history = useHistory();
 
@@ -134,7 +171,38 @@ const List = () => {
       },
     };
 
-    await axios(config);
+    // if (placa.length === 7) {
+    //   await axios(config);
+    // } else {
+    //   alert('PLACA INVÁLIDA')
+    // }
+
+    // await axios(config).catch(function (error) {
+    //   if (error.response) {
+    //     console.log(error.response.data.error.message)
+    //     console.log(error.response.status)
+    //     console.log(error.response.headers)
+    //   } else if (error.request) {
+    //     console.log(error.request)
+    //   } else {
+    //     console.log('Error', error.message)
+    //   }
+    // })
+
+    try {
+      let res = await axios(config);
+
+      let data = res.data;
+
+      console.log(data);
+      setErro(false)
+      setAcerto(true)
+    } catch (error) {
+      console.log(error.response.data.error.message);
+      setErro(true)
+      setAcerto(false)
+    }
+
     getCars();
   };
 
@@ -152,20 +220,37 @@ const List = () => {
     }
   };
 
+  const RenderMessage = () => {
+    if (erro) {
+      return (
+        <InsertPlateError>ERRO!</InsertPlateError>
+      )
+    } else if (acerto) {
+      return (
+        <InsertPlateHit>ADICIONADO!</InsertPlateHit>
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
     <CarsContainer>
-      <InputPlate type="text" placeholder="XXX0000"  onChange={(e) => { setPlaca(e.target.value)}} />
-      <LogoutButton
-        onClick={() => {
-          handleAdd(placa);
-        }}
-      >
-        ADICIONAR
-      </LogoutButton>
+      <LogoutButton onClick={handleLogout}>SAIR</LogoutButton>
+      <RenderMessage />
+      <Insertion>
+        <InputPlate type="text" placeholder="XXX0000"  onChange={(e) => { setPlaca(e.target.value)}} />
+        <AddButton
+          onClick={() => {
+            handleAdd(placa);
+          }}
+        >
+          ADICIONAR
+        </AddButton>
+      </Insertion>
       <CarList>
         <RenderCars />
       </CarList>
-      <LogoutButton onClick={handleLogout}>SAIR</LogoutButton>
     </CarsContainer>
   );
 };
