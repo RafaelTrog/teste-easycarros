@@ -22,10 +22,23 @@ const CarsContainer = styled.div`
 const CarList = styled.ul`
   //   border: 1px solid red;
   width: 100%;
+  height: 500px;
   background-color: #fff;
-  border-radius: 22px;
+  border-radius: 22px 0 0 22px;
   padding: 0;
   margin: 0;
+  overflow: auto;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f4f4f4;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: #c2c2c2;
+  }
 `;
 
 const CarItem = styled.li`
@@ -38,14 +51,25 @@ const CarItem = styled.li`
   height: 50px;
   border-bottom: 1px solid #b5b5b5;
   line-height: 50px;
-  padding: 0 20px 0 20px;
+  padding: 0 0 0 20px;
   font-weight: bold;
-  transition: all 2s ease-out;
+  opacity: ${(props) => (props.delete ? "0" : "1")};
+  transition: opacity 0.3s ease-out;
 
   & svg {
     margin: auto 0;
-    color: #c90000;
+    color: #fff;
     font-size: 18px;
+    cursor: pointer;
+  }
+
+  & span {
+    background-color: #c90000;
+    height: 100%;
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     cursor: pointer;
   }
 `;
@@ -97,25 +121,25 @@ const InsertPlateError = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  transition: all 0.2s ease-out;
-`
+`;
 
 const InsertPlateHit = styled(InsertPlateError)`
   background-color: green;
-`
+`;
 
 const Insertion = styled.div`
   width: 100%;
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
-`
+`;
 
 const List = () => {
   const [cars, setCars] = useState([]);
   const [placa, setPlaca] = useState("");
   const [erro, setErro] = useState(false);
   const [acerto, setAcerto] = useState(false);
+  const [carToDelete, setCarToDelete] = useState("");
 
   const history = useHistory();
 
@@ -138,6 +162,15 @@ const List = () => {
     getCars();
     console.log(localStorage.getItem(STORAGE_KEY));
   }, []);
+
+  useEffect(() => {
+    if (carToDelete) {
+      setTimeout(() => {
+        handleDelete(carToDelete);
+      }, 300);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [carToDelete]);
 
   const handleLogout = () => {
     logout();
@@ -195,12 +228,12 @@ const List = () => {
       let data = res.data;
 
       console.log(data);
-      setErro(false)
-      setAcerto(true)
+      setErro(false);
+      setAcerto(true);
     } catch (error) {
       console.log(error.response.data.error.message);
-      setErro(true)
-      setAcerto(false)
+      setErro(true);
+      setAcerto(false);
     }
 
     getCars();
@@ -210,8 +243,11 @@ const List = () => {
     if (cars.length > 0) {
       return cars.map((carro) => {
         return (
-          <CarItem key={carro.id}>
-            {carro.plate} <FaTrashAlt onClick={() => handleDelete(carro.id)} />{" "}
+          <CarItem key={carro.id} delete={carro.id === carToDelete}>
+            {carro.plate}{" "}
+            <span onClick={() => setCarToDelete(carro.id)}>
+              <FaTrashAlt />
+            </span>
           </CarItem>
         );
       });
@@ -222,24 +258,26 @@ const List = () => {
 
   const RenderMessage = () => {
     if (erro) {
-      return (
-        <InsertPlateError>ERRO!</InsertPlateError>
-      )
+      return <InsertPlateError>ERRO!</InsertPlateError>;
     } else if (acerto) {
-      return (
-        <InsertPlateHit>ADICIONADO!</InsertPlateHit>
-      )
+      return <InsertPlateHit>ADICIONADO!</InsertPlateHit>;
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
   return (
     <CarsContainer>
       <LogoutButton onClick={handleLogout}>SAIR</LogoutButton>
-      <RenderMessage />
+      {RenderMessage()}
       <Insertion>
-        <InputPlate type="text" placeholder="XXX0000"  onChange={(e) => { setPlaca(e.target.value)}} />
+        <InputPlate
+          type="text"
+          placeholder="XXX0000"
+          onChange={(e) => {
+            setPlaca(e.target.value);
+          }}
+        />
         <AddButton
           onClick={() => {
             handleAdd(placa);
@@ -248,9 +286,7 @@ const List = () => {
           ADICIONAR
         </AddButton>
       </Insertion>
-      <CarList>
-        <RenderCars />
-      </CarList>
+      <CarList>{RenderCars()}</CarList>
     </CarsContainer>
   );
 };
