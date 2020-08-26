@@ -3,30 +3,79 @@ import axios from "axios";
 import { STORAGE_KEY, logout } from "./Auth";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { FaTrashAlt } from "react-icons/fa";
+import Container from "./ui-components/Container";
+import PlateCards from "./ui-components/PlateCards";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import { FaSignOutAlt, FaPlus } from "react-icons/fa";
+import TextField from "@material-ui/core/TextField";
 
-const CarsContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 350px;
-  // background-color: #fff;
-  border-radius: 22px;
-
-  @media (max-width: 350px) {
-    width: 90%;
-  }
+const Title = styled.div`
+  font-size: 25px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  color: #383838;
 `;
 
-const CarList = styled.ul`
-  //   border: 1px solid red;
+const InputContainer = styled.div`
   width: 100%;
-  height: 500px;
-  background-color: #fff;
-  border-radius: 22px 0 0 22px;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const PlateInput = withStyles({
+  root: {
+    flex: "1",
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderRadius: "5px",
+    "& label.Mui-focused": {
+      color: "#007392",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#007392",
+      },
+      "&:hover fieldset": {
+        borderColor: "#007392",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#00576d",
+      },
+    },
+  },
+})(TextField);
+
+const LogoutButton = withStyles({
+  root: {
+    color: "#fff",
+    backgroundColor: "#007392",
+    "&:hover": {
+      backgroundColor: "#00576d",
+    },
+  },
+})(Button);
+
+const AddButton = withStyles({
+  root: {
+    marginLeft: "20px",
+    color: "#fff",
+    backgroundColor: "#007392",
+    "&:hover": {
+      backgroundColor: "#00576d",
+    },
+  },
+})(Button);
+
+const PlatesContainer = styled.div`
+  width: 400px;
+  max-height: 280px;
+  text-align: center;
+
   overflow: auto;
 
   ::-webkit-scrollbar {
@@ -39,107 +88,14 @@ const CarList = styled.ul`
     border-radius: 3px;
     background: #c2c2c2;
   }
-`;
 
-const CarItem = styled.li`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  list-style: none;
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #b5b5b5;
-  line-height: 50px;
-  padding: 0 0 0 20px;
-  font-weight: bold;
-  opacity: ${(props) => (props.delete ? "0" : "1")};
-  transition: opacity 0.3s ease-out;
-
-  & svg {
-    margin: auto 0;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-  }
-
-  & span {
-    background-color: #c90000;
-    height: 100%;
-    width: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    cursor: pointer;
-  }
-`;
-
-const LogoutButton = styled.button`
-  width: 100%;
-  height: 45px;
-  border: none;
-  border-radius: 40px;
-  box-sizing: border-box;
-  color: #fff;
-  font-weight: bold;
-  background-color: #0083d4;
-  cursor: pointer;
-  outline: none;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: #0068a8;
-  }
-`;
-
-const AddButton = styled(LogoutButton)`
-  width: 100px;
-  border-radius: 0 40px 40px 0;
-  margin: 0;
-`;
-
-const InputPlate = styled.input`
-  width: 100%;
-  height: 45px;
-  outline: none;
-  font-size: 20px;
-  line-height: 45px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 40px 0 0 40px;
-  text-align: center;
-  flex: 1;
-`;
-
-const InsertPlateError = styled.div`
-  width: 100%;
-  height: 20px;
-  border-radius: 10px;
-  background-color: red;
-  color: #fff;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const InsertPlateHit = styled(InsertPlateError)`
-  background-color: green;
-`;
-
-const Insertion = styled.div`
-  width: 100%;
-  margin-bottom: 5px;
-  display: flex;
-  flex-direction: row;
-`;
+`
 
 const List = () => {
   const [cars, setCars] = useState([]);
   const [placa, setPlaca] = useState("");
   const [erro, setErro] = useState(false);
-  const [acerto, setAcerto] = useState(false);
-  const [carToDelete, setCarToDelete] = useState("");
+  const [msg, setMsg] = useState("");
 
   const history = useHistory();
 
@@ -155,22 +111,11 @@ const List = () => {
 
     const res = await axios(config);
     setCars(res.data.data);
-    console.log(res.data.data);
   };
 
   useEffect(() => {
     getCars();
-    console.log(localStorage.getItem(STORAGE_KEY));
   }, []);
-
-  useEffect(() => {
-    if (carToDelete) {
-      setTimeout(() => {
-        handleDelete(carToDelete);
-      }, 300);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [carToDelete]);
 
   const handleLogout = () => {
     logout();
@@ -192,102 +137,96 @@ const List = () => {
   };
 
   const handleAdd = async (placa) => {
-    const config = {
-      method: "post",
-      url: "http://localhost:8181/vehicle",
-      headers: {
-        "content-type": "application/json",
-        Authorization: localStorage.getItem(STORAGE_KEY),
-      },
-      data: {
-        plate: placa,
-      },
-    };
+    if (placa.length === 7) {
+      const config = {
+        method: "post",
+        url: "http://localhost:8181/vehicle",
+        headers: {
+          "content-type": "application/json",
+          Authorization: localStorage.getItem(STORAGE_KEY),
+        },
+        data: {
+          plate: placa,
+        },
+      };
 
-    // if (placa.length === 7) {
-    //   await axios(config);
-    // } else {
-    //   alert('PLACA INVÁLIDA')
-    // }
-
-    // await axios(config).catch(function (error) {
-    //   if (error.response) {
-    //     console.log(error.response.data.error.message)
-    //     console.log(error.response.status)
-    //     console.log(error.response.headers)
-    //   } else if (error.request) {
-    //     console.log(error.request)
-    //   } else {
-    //     console.log('Error', error.message)
-    //   }
-    // })
-
-    try {
-      let res = await axios(config);
-
-      let data = res.data;
-
-      console.log(data);
-      setErro(false);
-      setAcerto(true);
-    } catch (error) {
-      console.log(error.response.data.error.message);
+      try {
+        let res = await axios(config);
+        let data = res.data;
+        setErro(false);
+      } catch (error) {
+        setErro(true);
+        setMsg("Erro ao adicionar veículo!");
+      }
+      getCars();
+    } else {
       setErro(true);
-      setAcerto(false);
+      setMsg("A placa deve estar no formato XXX0000!");
     }
-
-    getCars();
   };
 
   const RenderCars = () => {
     if (cars.length > 0) {
       return cars.map((carro) => {
         return (
-          <CarItem key={carro.id} delete={carro.id === carToDelete}>
-            {carro.plate}{" "}
-            <span onClick={() => setCarToDelete(carro.id)}>
-              <FaTrashAlt />
-            </span>
-          </CarItem>
+          <PlateCards
+            key={carro.id}
+            plate={carro.plate}
+            deleteCar={handleDelete}
+            carId={carro.id}
+          />
         );
       });
     } else {
-      return <CarItem>Nenhum veículo cadastrado!</CarItem>;
+      return <p>Nenhum veículo cadastrado!</p>;
     }
   };
 
   const RenderMessage = () => {
     if (erro) {
-      return <InsertPlateError>ERRO!</InsertPlateError>;
-    } else if (acerto) {
-      return <InsertPlateHit>ADICIONADO!</InsertPlateHit>;
+      return <p>{msg}</p>;
     } else {
       return null;
     }
   };
 
   return (
-    <CarsContainer>
-      <LogoutButton onClick={handleLogout}>SAIR</LogoutButton>
-      {RenderMessage()}
-      <Insertion>
-        <InputPlate
-          type="text"
-          placeholder="XXX0000"
+    <Container>
+      <Title>
+        Placas
+        <LogoutButton
+          variant="contained"
+          startIcon={<FaSignOutAlt />}
+          onClick={handleLogout}
+        >
+          Sair
+        </LogoutButton>
+      </Title>
+      <InputContainer>
+        <PlateInput
+          id="outlined-basic"
+          label="Placa (XXX0000)"
+          variant="outlined"
+          size="small"
           onChange={(e) => {
             setPlaca(e.target.value);
           }}
         />
         <AddButton
+          variant="contained"
+          startIcon={<FaPlus />}
           onClick={() => {
             handleAdd(placa);
           }}
         >
-          ADICIONAR
+          Adicionar
         </AddButton>
-      </Insertion>
-      <CarList>{RenderCars()}</CarList>
-    </CarsContainer>
+      </InputContainer>
+      <PlatesContainer>
+        {RenderCars()}
+      </PlatesContainer>
+      {RenderMessage()}
+    </Container>
   );
 };
 
