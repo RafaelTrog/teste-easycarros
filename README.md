@@ -150,3 +150,11 @@ You can now view easycarros in the browser.
 Note that the development build is not optimized.
 To create a production build, use yarn build.
 ```
+
+<br />
+
+<hr>
+
+<h1 align="center"><img width="200" src="https://github.com/RafaelTrog/teste-easycarros/blob/master/README/profilePicture.png") /></h1>
+
+<h4 align="center"> Desenvolvido por Rafael Trog - <a href="www.linkedin.com/in/rafael-trog" target="_blank"> LinkedIn </a> </h4>
