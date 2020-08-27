@@ -79,6 +79,12 @@ Exibir a lista de todos os veículos do usuário mostrando:
 <br />
 
 # :rocket: Tecnologias utilizadas
+* Biblioteca Javascript - <a href="https://pt-br.reactjs.org/" target="_blank">`React JS`</a>
+* Cliente HTTP - <a href="https://github.com/axios/axios" target="_blank">`axios`</a>
+* React UI Framework - <a href="https://material-ui.com/" target="_blank">`Material-UI`</a>
+* CSS-in-JS - <a href="https://www.styled-components.com/" target="_blank">`styled-components`</a>
+* Ícones - <a href="https://react-icons.github.io/react-icons/" target="_blank">`React Icons`</a>
+* Biblioteca de Navegação - <a href="https://reactrouter.com/web/guides/quick-start" target="_blank">`react-router-dom`</a>
 
 <br />
 
