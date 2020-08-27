@@ -13,10 +13,12 @@
 * Tecnologias Utilizadas
 * Como utilizar o projeto
 
+<br />
+
 # :page_facing_up: Sobre
 Desafio com o objetivo de avaliar as skills na criação de código para frontend para um problema do mundo real, criando uma *feature* que existe no **Easy Carros Docs**: <u>Controle de Veículos da Frota</u>.
 
-A *feature* consiste em
+<br />
 
 # :gem: Funcionalidades
 
@@ -74,7 +76,11 @@ Exibir a lista de todos os veículos do usuário mostrando:
 * :ship: Envie seu código para um repositório público para leitura (Github, Bitbucket, Gitlab, etc.).
 * :spiral_notepad: Crie um arquivo README na raiz do projeto com instruções detalhadas de como executar seu código.
 
+<br />
+
 # :rocket: Tecnologias utilizadas
+
+<br />
 
 # :books: Instruções
 
