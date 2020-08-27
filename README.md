@@ -16,7 +16,7 @@
 # :page_facing_up: Sobre
 Desafio com o objetivo de avaliar as skills na criação de código para frontend para um problema do mundo real, criando uma *feature* que existe no **Easy Carros Docs**: <u>Controle de Veículos da Frota</u>.
 
-A *feature* consiste em
+A *feature* consiste em 
 
 # :gem: Funcionalidades
 
