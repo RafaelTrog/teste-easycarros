@@ -4,8 +4,8 @@
 <h5 align="center"> Desafio Easy Carros para Frontend Developers. </h5>
 
 <h1 align="center">
-    <img width="400" src="\README\loginScreen.png") />
-    <img width="400" src="\README\listScreen.png") />
+    <img width="400" src="https://github.com/RafaelTrog/teste-easycarros/blob/master/README/loginScreen.png") />
+    <img width="400" src="https://github.com/RafaelTrog/teste-easycarros/blob/master/README/listScreen.png") />
 </h1>
 
 # :triangular_flag_on_post: Índice 
@@ -16,7 +16,7 @@
 # :page_facing_up: Sobre
 Desafio com o objetivo de avaliar as skills na criação de código para frontend para um problema do mundo real, criando uma *feature* que existe no **Easy Carros Docs**: <u>Controle de Veículos da Frota</u>.
 
-A *feature* consiste em 
+A *feature* consiste em
 
 # :gem: Funcionalidades
 
