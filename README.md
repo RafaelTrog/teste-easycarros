@@ -1,70 +1,140 @@
-# :smile: Sobre
+<h1 align="center">Frontend Challenge - Easy Carros
+</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h5 align="center"> Desafio Easy Carros para Frontend Developers. </h5>
 
-## Available Scripts
+<h1 align="center">
+    <img width="400" src="\README\loginScreen.png") />
+    <img width="400" src="\README\listScreen.png") />
+</h1>
 
-In the project directory, you can run:
+# :triangular_flag_on_post: Índice 
+* Sobre
+* Tecnologias Utilizadas
+* Como utilizar o projeto
 
-### `yarn start`
+# :page_facing_up: Sobre
+Desafio com o objetivo de avaliar as skills na criação de código para frontend para um problema do mundo real, criando uma *feature* que existe no **Easy Carros Docs**: <u>Controle de Veículos da Frota</u>.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A *feature* consiste em
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+# :gem: Funcionalidades
 
-### `yarn test`
+## 1. Tela de login
+**Permitir que o usuário se autentique na aplicação** :heavy_check_mark:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ao enviar o formulário:
+* Validar se ambos os campos estão preenchidos.
+    * Caso algum não esteja, exibir uma mensagem de erro para o usuário.
+    
+Ao receber a resposta do servidor:
+* Quando as credenciais de acesso estiverem corretas, o usuário deve ser redirecionado para a página de veículos.
+* Quando as credenciais são inválidas, o usuário deve receber uma mensagem informando-o do problema.
 
-### `yarn build`
+Informações adicionais:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Credenciais válidas:
+* E-mail: `frontend-dev@easycarros.com`
+* Senha: `Fr0nt3ndR0ck5!`
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 2. Tela de lista de veículos
+**Permitir que o usuário visualize seus veículos** :heavy_check_mark:
 
-### `yarn eject`
+Exibir a lista de todos os veículos do usuário mostrando:
+* Placa
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Permitir que o usuário adicione novos veículos** :heavy_check_mark:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* O usuário informa uma placa no campo logo acima da lista.
+* Ao clicar no botão enviar:
+    * Validar se a placa possui 7 caracteres alfanuméricos
+        * Caso seja válida, enviar a placa para a API
+        * Caso contrário, exibir uma mensagem de erro ao usuário
+    * Aguardar a resposta da API
+        * Caso seja inserido com sucesso, atualizar a lista de veículos
+        * Caso contrário, exibir uma mensagem de erro ao usuário
+        
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**Permitir que o usuário remova um veículo** :heavy_check_mark:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* Ao clicar no botão excluir, relacionado a cada veículo:
+    * Pedir para o usuário confirmar a exclusão
+        * Caso positivo:
+            * Enviar a requisição de exclusão para a API
+            * Remover o veículo excluído da lista
+        * Caso negativo:
+            * Manter a lista como está
+            
+# :warning: Regras
+* :page_with_curl: A aplicação deve ser uma SPA ou um mobile app.
+* :u5408: Use o framework com o qual você se sente mais confortável (aqui nós utilizamos principalmente React e ReactNative, mas qualquer framework "mainstream" é bem vindo).
+* :paintbrush: Fique à vontade para modificar a aparência das telas; os wireframes são apenas para referência.
+* :artificial_satellite: Use qualquer bibloteca para conseguir se comunicar com o backend.
+* :ship: Envie seu código para um repositório público para leitura (Github, Bitbucket, Gitlab, etc.).
+* :spiral_notepad: Crie um arquivo README na raiz do projeto com instruções detalhadas de como executar seu código.
 
-## Learn More
+# :rocket: Tecnologias utilizadas
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# :books: Instruções
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Pré-requisitos
+* Sistema de controle de versão: <a href="https://git-scm.com/" target="_blank">`git`</a>
+* Gerenciador de pacotes: <a href="https://yarnpkg.com/lang/en/docs/install" target="_blank">`yarn`</a>
+* Editor de código - Sugestão: <a href="https://code.visualstudio.com/download" target="_blank">`Visual Studio Code`</a>
 
-### Code Splitting
+## API
+```bash
+# Clonar o repositório
+$ git clone https://bitbucket.org/easycarros/frontend-challenge.git
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+# Entrar no diretório
+$ cd ./api
 
-### Analyzing the Bundle Size
+# Instalar dependências
+$ yarn install
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+# Executar o projeto
+$ yarn start
+```
 
-### Making a Progressive Web App
+Se tudo ocorrer bem, você verá a seguinte mensagem no seu terminal:
+```bash
+yarn run version
+$ node server.js
+App is listening on http://localhost:8181
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+O **CORS** da API está configurado para receber requisições de `localhost:3000`
 
-### Advanced Configuration
+## Endpoints
+Documentação completa <a href="https://bitbucket.org/easycarros/frontend-challenge" target="_blank">`AQUI`</a>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Frontend
+:exclamation: **Necessário manter a API rodando para consumí-la** :exclamation:
+```bash
+# Clonar o repositório
+$ git clone https://github.com/RafaelTrog/teste-easycarros.git
 
-### Deployment
+# Entrar no diretório
+$ cd ./teste-easycarros
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+# Instalar dependências
+$ yarn install
 
-### `yarn build` fails to minify
+# Executar o projeto
+$ yarn start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Se tudo ocorrer bem, você verá a seguinte mensagem no seu terminal:
+```bash
+Compiled successfully!
+
+You can now view easycarros in the browser.
+
+    Local:              http://localhost:3000
+    On Yout Network:    http://192.168.x.x:3000
+    
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+```

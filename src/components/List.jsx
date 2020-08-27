@@ -151,8 +151,7 @@ const List = () => {
       };
 
       try {
-        let res = await axios(config);
-        let data = res.data;
+        await axios(config);
         setErro(false);
       } catch (error) {
         setErro(true);
